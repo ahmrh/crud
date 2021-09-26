@@ -1,5 +1,5 @@
 <?php 
-    $vnama = $vid = $vkota = "";
+    $vnama = $vid = $vkota = $vruang =  "";
     $conn = mysqli_connect("localhost", "root", "", "crud");
 
     if ($conn->connect_error) {
@@ -9,7 +9,7 @@
     if(isset($_POST['submit'])){
         $action = isset($_GET['action']) ? $_GET['action'] : '';
         if($action == 'edit'){
-            $sql = "UPDATE pengunjung SET nama = '$_POST[nama]', kota = '$_POST[kota]' WHERE id = '$_GET[id]'";
+            $sql = "UPDATE pengunjung SET nama = '$_POST[nama]', kota = '$_POST[kota]', ruang = '$_POST[ruang]' WHERE id = '$_GET[id]'";
             if ($conn->query($sql) === TRUE) {
                 echo "<script>
                             alert('Data Telah Terupdate');
@@ -25,8 +25,8 @@
         }
 
         else{
-            $sql = "INSERT INTO pengunjung (id, nama, kota)
-                VALUES ('$_POST[id]', '$_POST[nama]', '$_POST[kota]')";
+            $sql = "INSERT INTO pengunjung (id, nama, kota, ruang)
+                VALUES ('$_POST[id]', '$_POST[nama]', '$_POST[kota]', '$_POST[ruang]')";
 
             if ($conn->query($sql) === TRUE) {
                 echo "<script> alert('Data berhasil disimpan'); </script>";
@@ -34,13 +34,14 @@
                 $sql = "CREATE TABLE pengunjung (
                         id VARCHAR(10) NOT NULL PRIMARY KEY,
                         nama VARCHAR(30) NOT NULL,
-                        kota VARCHAR(50),
+                        kota VARCHAR(50) NOT NULL,
+                        ruang VARCHAR(30) NOT NULL,
                         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                         )";
                 if ($conn->query($sql) === TRUE) {
-                echo "<script>alert('Table Pengunjung created successfully'); </script>";
-                $sql = "INSERT INTO pengunjung (id, nama, kota)
-                        VALUES ('$_POST[id]', '$_POST[nama]', '$_POST[kota]')";
+                    echo "<script>alert('Table Pengunjung created successfully'); </script>";
+                    $sql = "INSERT INTO pengunjung (id, nama, kota)
+                            VALUES ('$_POST[id]', '$_POST[nama]', '$_POST[kota]')";
                     if ($conn->query($sql) === TRUE) {
                         echo "<script> alert('Data berhasil disimpan'); </script>";
                     }
@@ -73,6 +74,7 @@
                 $vid= $data['id'];
                 $vnama = $data['nama'];
                 $vkota = $data['kota'];
+                $vruang = $data['ruang'];
             }
         }
     }
@@ -141,6 +143,10 @@
                     <label for="kota" class="form-label">Kota</label>
                     <input type="text" class="form-control" name="kota" value = "<?php echo $vkota; ?>" required>
                 </div>
+                <div class="mb-3">
+                    <label for="ruang" class="form-label">Nama Ruang</label>
+                    <input type="text" class="form-control" name="ruang" value = "<?php echo $vruang; ?>" required>
+                </div>
                 <div class="text-right">
                     <br>
                     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
@@ -170,6 +176,7 @@
                     <th scope="col">Nomor ID</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Kota</th>
+                    <th scope="col">Ruang</th>
                     <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -180,6 +187,7 @@
                     <td><span id="id"> <?php echo $row['id']; ?> </span> </td>
                     <td><span id="nama"> <?php echo $row['nama'];?> </span> </td>
                     <td><span id="kota"> <?php echo $row['kota']; ?></span> </td>
+                    <td><span id="ruang"> <?php echo $row['ruang']; ?></span> </td>
                     <td> 
                         <a href="index.php?action=edit&id=<?php echo $row['id'] ?>" class="btn btn-success edit"> Edit </button> 
                         <a href="index.php?action=delete&id=<?php echo $row['id'] ?>" onclick="return confirm('Apakah yakin ingin menghapus data ini?')" class="btn btn-danger tombol"> Delete </a>

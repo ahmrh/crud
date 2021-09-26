@@ -1,3 +1,3 @@
 # crud
 
-just my college assignment about crud in database, my first time making too
+just my college assignment about crud function in webpage, my first time making one too
